@@ -11,14 +11,15 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static Vicinia.sharedObjects;
 
 namespace Vicinia
 {
-    public static class CreatePost
+    public static class CreateMessage
     {
         private static readonly DocumentClient _client= new DocumentClient(new Uri(Environment.GetEnvironmentVariable("endpoint")), Environment.GetEnvironmentVariable("key"));
 
-        [FunctionName("CreatePost")]
+        [FunctionName("CreateMessage")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
@@ -30,18 +31,17 @@ namespace Vicinia
 
             var name = data?.name;
             var text = data?.text;
-            var time = DateTime.Now;//data?.time;
+            var time = data?.time;
             var location = data?.location;
-            var locationJson = JsonConvert.DeserializeObject(location);
+            var longitude = location.GetValue("long");
+            var latitude = location.GetValue("lat");
+            var newLocation = new Location(Convert.ToDouble(longitude), Convert.ToDouble(latitude));
             
-            
-            
-
-            //var message = Message(name, text, time, )
+            var message = new Message($"{name}", $"{text}", Convert.ToDateTime(time), newLocation);
 
             return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+                ? (ActionResult)new OkObjectResult(JsonConvert.SerializeObject(message))
+                : new BadRequestObjectResult("Please pass the name, text, time, and location in the request body");
         }
     }
 }

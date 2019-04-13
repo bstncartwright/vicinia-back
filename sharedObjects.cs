@@ -9,10 +9,10 @@ namespace Vicinia
     {
         public class Location
         {
-            public Location(double longitude, double latitiude)
+            public Location(double longitude, double latitude)
             {
                 Longitude = longitude;
-                Latitiude = latitiude;
+                Latitiude = latitude;
             }
 
             [JsonProperty(PropertyName = "long")]
