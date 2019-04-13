@@ -39,6 +39,8 @@ namespace Vicinia
             
             var message = new Message($"{name}", $"{text}", Convert.ToDateTime(time), newLocation);
 
+            await _client.UpsertDocumentAsync(UriFactory.CreateDocumentCollectionUri("MessageDB", "Messages"), message);
+
             return name != null
                 ? (ActionResult)new OkObjectResult(JsonConvert.SerializeObject(message))
                 : new BadRequestObjectResult("Please pass the name, text, time, and location in the request body");
