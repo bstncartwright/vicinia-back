@@ -7,26 +7,40 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Azure.Documents.Client;
+using Newtonsoft.Json.Linq;
+using Microsoft.Azure.Documents;
 
 namespace Vicinia
 {
     public static class GetMessage
     {
+        private static readonly DocumentClient _client = new DocumentClient(new Uri(Environment.GetEnvironmentVariable("endpoint")), Environment.GetEnvironmentVariable("key"));
+
         [FunctionName("GetMessage")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Get message triggered");
 
-            string name = req.Query["name"];
+            string id = req.Query["id"];
+            Document response;
+            try
+            {
+                var uri = UriFactory.CreateDocumentUri("MessageDB", "Messages", id);
+                response = await _client.ReadDocumentAsync(uri);
+            }
+            catch (DocumentClientException e)
+            {
+                log.LogInformation($"{e}");
+                throw;
+            }
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            var responseObject = JObject.Parse(JsonConvert.SerializeObject(response));
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
+            return responseObject != null
+                ? (ActionResult)new OkObjectResult($"{responseObject.ToString()}")
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
     }
