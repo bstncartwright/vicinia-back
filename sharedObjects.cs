@@ -7,20 +7,51 @@ namespace Vicinia
 {
     public class sharedObjects
     {
-
-
         public class Location
         {
+            public Location(double longitude, double latitiude)
+            {
+                Longitude = longitude;
+                Latitiude = latitiude;
+            }
+
             [JsonProperty(PropertyName = "long")]
-            public double longitude { get; set; }
+            public double Longitude { get; set; }
 
             [JsonProperty(PropertyName = "lat")]
-            public double latitiude { get; set; }
+            public double Latitiude { get; set; }
+        }
+
+        public class Message
+        {
+            [JsonProperty(PropertyName = "id")]
+            public string messageId { get; set; }
+
+            [JsonProperty(PropertyName = "name")]
+            public string username { get; set; }
+
+            [JsonProperty(PropertyName = "text")]
+            public string messageText { get; set; }
+
+            [JsonProperty(PropertyName = "time")]
+            public DateTime timeOfMessage { get; set; }
+
+            [JsonProperty(PropertyName = "location")]
+            public Location messageLocation { get; set; }
+
+            public Message(string name, string text, DateTime time, Location location)
+            {
+                messageId = null;
+                username = name;
+                messageText = text;
+                timeOfMessage = time;
+                messageLocation = location;
+            }
         }
 
         public bool isInProximity(Location location)
         {
-            
+            return true;
         }
     }
 }
