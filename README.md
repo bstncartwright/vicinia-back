@@ -9,13 +9,7 @@
 - [Michelle Charette](https://github.com/theManMitch): "Math Guy" on Backend Developer
 
 ## Description
-1. Written entirely in C#
-2. Uses query
-3. Uses Geolocation
-4. Azure functions
-4. Cosmos DB
-4. Communication through sql API
-4. Authenticated http triggers
-4. Scale-able
-4. Position math
-4. Once again, Serverless!
+
+
+
+The back end of this project was written within 12 hours and entirely in C#. We developed a CRUD API that allows the app to create and retrieve messages from the serverless database through Azure Functions. We created a database using Cosmos DB and using the SQL API, we were able to query entries in real time, limiting them by location that we recieved from the app using GPS coordinates, and sorting them based on the time the message was posted. The limitation radius is scaleable and all math was done by us. The API is based on authenticated http triggers and automatically scales based on traffic and is available globally.
