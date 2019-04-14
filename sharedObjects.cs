@@ -49,10 +49,7 @@ namespace Vicinia
             }
         }
 
-        public bool isInProximity(Location location)
-        {
-            return true;
-        }
+        
     }
 }
 

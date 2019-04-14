@@ -28,8 +28,8 @@ namespace Vicinia
             Document response;
             try
             {
-                var uri = UriFactory.CreateDocumentUri("MessageDB", "Messages", id);
-                response = await _client.ReadDocumentAsync(uri);
+               
+                response = await _client.ReadDocumentAsync(UriFactory.CreateDocumentUri("MessageDB", "Messages", id));
             }
             catch (DocumentClientException e)
             {
