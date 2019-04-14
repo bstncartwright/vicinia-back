@@ -56,7 +56,7 @@ namespace Vicinia
 
         public static string CreateQuery(Location location, DateTime time)
         {
-            var radius = .0003;
+            var radius = .0006;
             var testTime = time.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ssZ");
             var query = $"SELECT value c.id FROM c where (c.location.lat between {location.Latitiude - radius} and {location.Latitiude + radius}) " +
             $"and (c.location.long between {location.Longitude - radius} and {location.Longitude + radius}) " + 

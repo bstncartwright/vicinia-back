@@ -23,7 +23,6 @@ namespace Vicinia
             ILogger log)
         {
             log.LogInformation("Get message triggered");
-
             string id = req.Query["id"];
             Document response;
             try
